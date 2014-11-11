@@ -21,8 +21,18 @@ class SplitWords
 
   def use_word?(current_word, next_word)
     return false unless trie.word?(current_word)
-    return true if next_word.nil?
-    !trie.partial_word?(next_word)
+  end
+
+  def use_word?(current_word_chars, remaining_word_chars)
+    return false unless trie.word?(current_word_chars.join)
+    return true if remaining_word_chars.none?
+    next_word_chars = current_word_chars + [remaining_word_chars[0]]
+
+    begin
+      split(remaining_word_chars.join).any?
+    rescue UnknownWordError
+      !trie.partial_word?(next_word_chars.join)
+    end
   end
 
   def split(combined_word)
@@ -33,13 +43,7 @@ class SplitWords
     combined_word_chars.each_with_index do |char, i|
       current_word_chars << char
 
-      if combined_word_chars.size == i + 1
-        next_word = nil
-      else
-        next_word = (current_word_chars + [combined_word_chars[i + 1]]).join
-      end
-
-      if use_word?(current_word_chars.join, next_word)
+      if use_word?(current_word_chars, combined_word_chars[i + 1..-1])
         split_words << current_word_chars.join
         current_word_chars.clear
       end
