@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+fail "Usage: split-words /path/to/file word" if ARGV.count != 2
+
+require './split_words'
+
+file_path, combined_word = ARGV
+
+split_words = SplitWords.new
+split_words.populate_trie(file_path)
+split_words.split(combined_word).each { |word| puts word }
