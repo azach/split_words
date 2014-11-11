@@ -19,10 +19,6 @@ class SplitWords
     self.class.populate_trie(trie: @trie, file_path: file_path)
   end
 
-  def use_word?(current_word, next_word)
-    return false unless trie.word?(current_word)
-  end
-
   def use_word?(current_word_chars, remaining_word_chars)
     return false unless trie.word?(current_word_chars.join)
     return true if remaining_word_chars.none?
