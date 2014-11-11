@@ -8,4 +8,4 @@ file_path, combined_word = ARGV
 
 split_words = SplitWords.new
 split_words.populate_trie(file_path)
-split_words.split(combined_word).each { |word| puts word }
+puts split_words.split(combined_word).join(' ')
